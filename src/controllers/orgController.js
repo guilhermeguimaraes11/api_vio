@@ -44,7 +44,7 @@ module.exports = class orgController {
           else {
             return res
               .status(201)
-              .json({ message: "Usuário Criado com Sucesso" });
+              .json({ message: "Organizador Criado com Sucesso" });
           } // else
         }); // connect
       } catch (error) {
