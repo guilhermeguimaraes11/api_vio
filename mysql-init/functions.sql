@@ -181,3 +181,44 @@ set faixa = faixa_etaria(nascimento);
 return faixa;
 end; $$
 delimiter;
+
+-- exercicio 
+delimiter $$
+
+create function total_ingressos_vendidos(id_evento int)
+returns int
+deterministic
+begin
+    declare total int;
+
+    select ifnull(sum(ic.quantidade), 0)
+    into total
+    from ingresso_compra ic
+    join ingresso i on ic.fk_id_ingresso = i.id_ingresso
+    where i.fk_id_evento = id_evento;
+
+    return total;
+end; $$
+
+delimiter;
+
+
+delimiter $$
+
+create function renda_total_evento(id_evento int)
+returns decimal(10,2)
+deterministic
+begin
+    declare renda decimal(10,2);
+
+    select ifnull(sum(i.preco * ic.quantidade), 0.00)
+    into renda
+    from ingresso_compra ic
+    join ingresso i on ic.fk_id_ingresso = i.id_ingresso
+    where i.fk_id_evento = id_evento;
+
+    return renda;
+end;
+$$
+
+delimiter;
