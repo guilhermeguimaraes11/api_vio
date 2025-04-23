@@ -1,7 +1,7 @@
 const connect = require("../db/connect");
 
-module.exports = class ingressoController {
-  static async createIngresso(req, res) {
+module.exports = class ingController {
+  static async createIng(req, res) {
     const { preco, tipo, fk_id_evento } = req.body;
     if (!preco || !tipo || !fk_id_evento) {
       return res
@@ -38,7 +38,7 @@ module.exports = class ingressoController {
     }
   } // fim do 'createIng'
 
-  static async getAllIngresso(req, res) {
+  static async getAllIngs(req, res) {
     const query = `SELECT * FROM ingresso`;
     try {
       connect.query(query, (err, results) => {
@@ -57,7 +57,7 @@ module.exports = class ingressoController {
     }
   } // fim do 'getAllIngs'
 
-  static async updateIngresso(req, res) {
+  static async updateIng(req, res) {
     const { preco, tipo, fk_id_evento, id_ingresso } = req.body;
 
     if (!preco || !tipo || !fk_id_evento || !id_ingresso) {
@@ -103,7 +103,7 @@ module.exports = class ingressoController {
     }
   } // fim do 'updateIng'
 
-  static async deleteIngresso(req, res) {
+  static async deleteIng(req, res) {
     const ingressoId = req.params.id_ingresso;
     const query = `DELETE FROM ingresso WHERE id_ingresso = ?`;
     const values = [ingressoId];

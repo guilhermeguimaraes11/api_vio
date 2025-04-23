@@ -22,7 +22,7 @@ module.exports = class eventoController {
       });
     } catch (error) {
       console.log("Erro ao executar consulta: ", error);
-      return res.status(500).json({ error: "Erro interno do servidor" });
+      return res.status(500).json({ error: "Erro interno do servido" });
     }
   } // fim do 'createEvento'
 
@@ -39,7 +39,7 @@ module.exports = class eventoController {
           .json({ message: "Eventos listados com sucesso", eventos: results });
       });
     } catch (error) {
-      console.log("Erro ao executar a query: ", error);
+      console.log("Erro ao executar a querry: ", error);
       return res.status(500).json({ error: "Erro interno do Servidor" });
     }
   } // fim do 'getAllEventos'
@@ -110,9 +110,8 @@ module.exports = class eventoController {
     }
   } // fim do 'deleteEvento'
 
-  static async getEventoPorData(req, res) {
+  static async getEventosPorData(req, res) {
     const query = `SELECT * FROM evento`;
-
     try {
       connect.query(query, (err, results) => {
         if (err) {
@@ -123,8 +122,7 @@ module.exports = class eventoController {
         const dia = dataEvento.getDate();
         const mes = dataEvento.getMonth() + 1;
         const ano = dataEvento.getFullYear();
-        console.log(dia + "/" + mes + "/" + ano);
-
+        console.log(" Data Evento 1:", dia + "/" + mes + "/" + ano, "\n");
         const now = new Date();
         const eventosPassados = results.filter(
           (evento) => new Date(evento.data_hora) < now
@@ -139,34 +137,42 @@ module.exports = class eventoController {
         const horas = Math.floor(
           (diferencaMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
-        const min = Math.floor(
+        const minutos = Math.floor(
           ((diferencaMs % (1000 * 60 * 60 * 24)) % (1000 * 60 * 60)) /
             (1000 * 60)
         );
-        const seg = Math.floor(
+        const segundos = Math.floor(
           (((diferencaMs % (1000 * 60 * 60 * 24)) % (1000 * 60 * 60)) %
             (1000 * 60)) /
             1000
         );
+
+        console.log(" Diferença em MS:", diferencaMs, "\n");
+        console.log(" Diferença em Minutos:", (dias * 24 + horas) * 60, "\n");
+        console.log(" Diferença em Horas:", dias * 24 + horas, "\n");
+        console.log(" Diferença em Dias:", dias, "\n");
         console.log(
-          diferencaMs,
-          "Faltam: " + dias + " dias",
-          +horas,
-          "horas",
-          +min,
-          "min",
-          +seg,
-          "seg"
+          " Diferença em Total:",
+          dias,
+          "dias,",
+          horas,
+          "horas,",
+          minutos,
+          "minutos e",
+          segundos,
+          "segundos",
+          "\n"
         );
 
-        //comparando datas
         const dataFiltro = new Date("2024-12-15").toISOString().split("T");
         const eventosDia = results.filter(
           (evento) =>
             new Date(evento.data_hora).toISOString().split("T")[0] ===
             dataFiltro[0]
         );
-        console.log("Eventos:", eventosDia);
+        console.log(" Data Filtro:", dataFiltro, "\n");
+        console.log(" Eventos do Dia:", eventosDia, "\n");
+
         return res
           .status(200)
           .json({ message: "Eventos: ", eventosFuturos, eventosPassados });
@@ -175,13 +181,14 @@ module.exports = class eventoController {
       console.log("Erro ao executar a querry: ", error);
       return res.status(500).json({ error: "Erro interno do Servidor" });
     }
-  }
+  } // fim do 'getEventosPorData'
+
   static async getEventosPorData7Dias(req, res) {
     const dataFiltro = new Date(req.params.data).toISOString().split("T");
-    const dataLimite = new Date(req.params.data);
-    dataLimite.setDate(dataLimite.getDate() + 7);
-    console.log("Data Fornecida:", dataFiltro);
-    console.log("Data Limite:", dataLimite);
+    const dataLimite = new Date(req.params.data);  
+    dataLimite.setDate(dataLimite.getDate() + 7);  
+    console.log("Data Fornecida:", dataFiltro[0], "\n");
+    console.log("Data Limite:", dataLimite.toISOString().split("T")[0], "\n");
     const query = `SELECT * FROM evento`;
     try {
       connect.query(query, (err, results) => {
@@ -192,27 +199,18 @@ module.exports = class eventoController {
 
         const eventosSelecionados = results.filter(
           (evento) =>
-            new Date(evento.data_hora).toISOString().split("T")[0] >=
-              dataFiltro[0] &&
-            new Date(evento.data_hora).toISOString().split("T")[0] <
-              dataLimite.toISOString().split("T")[0]
+            new Date(evento.data_hora).toISOString().split("T")[0] >= dataFiltro[0] && new Date(evento.data_hora).toISOString().split("T")[0] < dataLimite.toISOString().split("T")[0]
         );
 
-        console.log(eventosSelecionados);
+        console.log(eventosSelecionados, '\n\n------------------------------------------\n\n');
 
         return res
           .status(200)
-          .json({ message: "Eventos: ", eventosSelecionados });
+          .json({eventosSelecionados });
       });
     } catch (error) {
       console.log("Erro ao executar a querry: ", error);
       return res.status(500).json({ error: "Erro interno do Servidor" });
     }
-    const dataEvento = new Date("2024-10-11T08:00:00Z");
-    const dia = dataEvento.getDate();
-    const mes = dataEvento.getMonth() + 1;
-    const ano = dataEvento.getFullYear();
-
-    console.log(`Evento no dia: ${dia}, Mes: ${mes}, Ano: ${ano}`);
-  }
+  } 
 };
