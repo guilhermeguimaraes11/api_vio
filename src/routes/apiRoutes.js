@@ -18,9 +18,9 @@ router.put("/org", orgController.updateOrg);
 router.delete("/org/:id_organizador", orgController.deleteOrg);
 
 router.post("/evento", eventoController.createEvento);
-router.get("/evento", eventoController.getAllEventos);
-router.get("/evento/data", eventoController.getEventosPorData);
-router.get("/evento/:data", eventoController.getEventosPorData7Dias);
+router.get("/evento", verifyJWT,eventoController.getAllEventos);
+router.get("/evento/data", verifyJWT, eventoController.getEventosPorData);
+router.get("/evento/:data", verifyJWT, eventoController.getEventosPorData7Dias);
 router.put("/evento", eventoController.updateEvento);
 router.delete("/evento/:id_evento", eventoController.deleteEvento);
 
