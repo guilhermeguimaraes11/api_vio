@@ -1,6 +1,6 @@
-create database vio_guilherme;
+-- create database vio_guilherme;
 
-use vio_guilherme;
+-- use vio_guilherme;
 
 create table usuario (
     id_usuario int auto_increment primary key,
