@@ -5,6 +5,7 @@ const verifyJWT = require("../services/verifyJWT");
 const orgController = require("../controllers/orgController");
 const eventoController = require("../controllers/eventoController");
 const ingController = require("../controllers/ingController");
+const upload = require("../services/upload");
 
 router.post("/user", userController.createUser);
 router.get("/user", verifyJWT, userController.getAllUsers);
@@ -17,7 +18,7 @@ router.get("/org", orgController.getAllOrgs);
 router.put("/org", orgController.updateOrg);
 router.delete("/org/:id_organizador", orgController.deleteOrg);
 
-router.post("/evento", eventoController.createEvento);
+router.post("/evento", upload.single("imagem"), eventoController.createEvento);
 router.get("/evento", verifyJWT,eventoController.getAllEventos);
 router.get("/evento/data", verifyJWT, eventoController.getEventosPorData);
 router.get("/evento/:data", verifyJWT, eventoController.getEventosPorData7Dias);
