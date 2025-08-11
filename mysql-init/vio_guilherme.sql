@@ -116,5 +116,5 @@ CREATE TABLE resumo_evento (
     total_ingressos INT
 );
 
-
 ALTER TABLE evento ADD imagem LONGBLOB;
+ALTER TABLE evento ADD tipo_imagem VARCHAR(100);
